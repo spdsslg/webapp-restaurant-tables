@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ config.RESTAURANT_NAME }}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="{{ url_for('main.home') }}">{{ config.RESTAURANT_NAME }}</a>
+      <span>A little time, well spent.</span>
+    </header>
+    <main id="main-content">{% block content %}{% endblock %}</main>
+    <footer class="site-footer">Something here</footer>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Welcome {{ config.RESTAURANT_NAME }}{% endblock %}
+{% block content %}
+<section class="welcome" aria-labelledby="welcome-title">
+  <p class="eyebrow">Welcome to our restaurant</p>
+  <h1 id="welcome-title">A place at the table.</h1>
+  <p class="intro">Slow down and enjoy a meal together.</p>
+</section>
+<section class="note" aria-labelledby="note-title">
+  <h2 id="note-title">Around the table</h2>
+  <p>A quiet family meal, or an evening with friends. There is always a reason to gather.</p>
+</section>
+{% endblock %}
