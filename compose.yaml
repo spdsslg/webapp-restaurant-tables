@@ -1,16 +1,83 @@
+x-app: &app
+  image: restaurant-dev
+  environment: &app-env
+    FLASK_RESTAURANT_NAME: "${FLASK_RESTAURANT_NAME:-Restaurant}"
+    FLASK_DATABASE_HOST: db
+    FLASK_DATABASE_PORT: "5432"
+    FLASK_DATABASE_NAME: restaurant
+    FLASK_DATABASE_USER: restaurant
+    FLASK_DATABASE_PASSWORD: "${POSTGRES_PASSWORD:-local-development-only}"
+    FLASK_MAIL_HOST: mailpit
+    FLASK_MAIL_PORT: "1025"
+  volumes:
+    - ./app:/app/app:ro
+    - ./tests:/app/tests:ro
+    - ./migrations:/app/migrations:ro
+
 services:
   web:
+    <<: *app
     build: .
     ports:
       - "127.0.0.1:8000:5000"
-    environment:
-      FLASK_RESTAURANT_NAME: "${FLASK_RESTAURANT_NAME:-Restaurant}"
-    volumes:
-      - ./app:/app/app:ro
-      - ./tests:/app/tests:ro
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=2)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/ready', timeout=4)"]
       interval: 10s
-      timeout: 3s
+      timeout: 5s
       retries: 3
       start_period: 10s
+
+  migrate:
+    <<: *app
+    pull_policy: never
+    command: ["flask", "--app", "app:create_app", "db", "upgrade"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: restaurant
+      POSTGRES_USER: restaurant
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-local-development-only}"
+    ports:
+      - "127.0.0.1:54320:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U restaurant -d restaurant"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  mailpit:
+    image: axllent/mailpit:v1.27
+    ports:
+      - "127.0.0.1:8025:8025"
+      - "127.0.0.1:1025:1025"
+
+  db-test:
+    image: postgres:17-alpine
+    profiles: ["test"]
+    environment:
+      POSTGRES_DB: restaurant_test
+      POSTGRES_USER: restaurant_test
+      POSTGRES_PASSWORD: test-only
+    ports:
+      - "127.0.0.1:54321:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U restaurant_test -d restaurant_test"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres_data:

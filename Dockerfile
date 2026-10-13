@@ -8,6 +8,7 @@ RUN pip install --no-cache-dir -r requirements-dev.txt \
     && chown appuser:appuser /app
 COPY app ./app
 COPY tests ./tests
+COPY migrations ./migrations
 COPY pytest.ini ./
 USER appuser
 EXPOSE 5000
