@@ -17,6 +17,11 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(100),nullable=False)
     role = db.Column(db.String(20), nullable=False, server_default="customer")
     is_active = db.Column(db.Boolean, nullable=False,server_default=sa.true())
+    auth_version = db.Column(db.Integer, nullable=False, server_default="0")
+
+    def get_id(self):
+        """Include the credential version so password changes revoke existing sessions"""
+        return f"{self.id}:{self.auth_version}"
 
 class RestaurantSettings(db.Model):
     __tablename__ = "restaurant_settings"

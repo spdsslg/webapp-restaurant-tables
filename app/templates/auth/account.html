@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ title }} · {{ config.RESTAURANT_NAME }}{% endblock %}
+{% block title %}{{ title }} - {{ config.RESTAURANT_NAME }}{% endblock %}
 {% block content %}
 <section class="account-panel" aria-labelledby="account-title">
   <h1 id="account-title">{{ title }}</h1>
@@ -8,5 +8,9 @@
     <dt>Email</dt><dd>{{ current_user.email }}</dd>
     <dt>Role</dt><dd>{{ current_user.role|capitalize }}</dd>
   </dl>
+  {% if request.endpoint == 'auth.account' %}
+    <p><a href="{{ url_for('profile.edit') }}">Edit contact details</a></p>
+    <p><a href="{{ url_for('profile.change_password') }}">Change password</a></p>
+  {% endif %}
 </section>
 {% endblock %}

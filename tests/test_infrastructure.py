@@ -7,12 +7,9 @@ from app import create_app
 from app.extensions import db
 
 
-
-
 def database_app():
     return create_app({"TESTING": True, "SQLALCHEMY_DATABASE_URI":
                        "postgresql+psycopg://unused@localhost/unused"})
-
 
 
 
@@ -24,7 +21,6 @@ def test_database_failure_returns_unavailable_without_details():
     assert response.status_code == 503
     assert response.json == {'status': 'unavailable', 'scope': 'database'}
     assert b'secret' not in response.data
-
 
 def test_test_email_uses_configured_smtp():
     smtp = MagicMock()

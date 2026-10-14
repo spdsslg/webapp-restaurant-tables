@@ -10,6 +10,7 @@ from .database import register_commands
 from .mail import register_mail_commands
 from .auth import bp as auth_bp
 from .accounts import register_account_commands
+from .profile import bp as profile_bp
 
 
 def create_app(test_config=None):
@@ -23,6 +24,7 @@ def create_app(test_config=None):
         SQLALCHEMY_ENGINE_OPTIONS={"pool_pre_ping": True, "connect_args": {"connect_timeout": 3}},
         MAIL_HOST="localhost", MAIL_PORT=1025, MAIL_SENDER="restaurant@example.test",
         SECRET_KEY=None, SESSION_COOKIE_HTTPONLY=True, SESSION_COOKIE_SAMESITE="Lax",
+        RESET_TOKEN_MAX_AGE=1800, PUBLIC_BASE_URL="http://localhost:8000",
     )
     app.config.from_prefixed_env()
     #Passwords such as "1234" must stay strings rather than JSON-parsed values
@@ -53,6 +55,7 @@ def create_app(test_config=None):
     csrf.init_app(app)
 
     app.register_blueprint(auth_bp)
+    app.register_blueprint(profile_bp)
     register_account_commands(app)
 
     app.register_blueprint(bp)

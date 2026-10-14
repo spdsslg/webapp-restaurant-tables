@@ -37,7 +37,6 @@ def test_seed_is_idempotent_and_preserves_staff_changes(database_app, database):
 
 
 
-
 def test_back_to_back_allowed_but_overlap_rejected(database, booking):
     first = Reservation(**booking)
     adjacent = Reservation(**{**booking, "start_at": booking["end_at"],
@@ -47,7 +46,6 @@ def test_back_to_back_allowed_but_overlap_rejected(database, booking):
     database.session.add(Reservation(**{**booking, "start_at": booking["start_at"] + timedelta(minutes=30)}))
     with pytest.raises(IntegrityError, match="reservation_no_overlap"):
         database.session.commit()
-
 
 def test_cancellation_preserves_record_and_releases_interval(database, booking):
     original = Reservation(**booking)
@@ -68,14 +66,12 @@ def test_database_rejects_duration_above_three_hours(database, booking):
     with pytest.raises(IntegrityError, match="reservation_interval"):
         database.session.commit()
 
-
 def test_referenced_table_cannot_be_deleted(database, booking):
     database.session.add(Reservation(**booking))
     database.session.commit()
     # PostgreSQL checks RESTRICT at statement execution, not just commit
     with pytest.raises(IntegrityError):
         database.session.execute(sa.delete(DiningTable).where(DiningTable.id == booking["table_id"]))
-
 
 def test_database_rejects_invalid_settings_bounds(database):
     database.session.add(RestaurantSettings(id=1, min_duration_minutes=181))

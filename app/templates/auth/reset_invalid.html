@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Reset link unavailable {{ config.RESTAURANT_NAME }}{% endblock %}
+{% block content %}
+<section class="account-panel">
+  <h1>Reset link unavailable</h1>
+  <p role="alert">This link is invalid, expired, or has already been used.</p>
+  <p><a href="{{ url_for('profile.forgot_password') }}">Request a new reset link</a></p>
+</section>
+{% endblock %}

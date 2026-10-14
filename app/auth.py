@@ -25,13 +25,13 @@ def load_user(user_id):
     if not current_app.config.get("SQLALCHEMY_DATABASE_URI"):
         return None
     try:
-        identifier = int(user_id)
-    except (TypeError, ValueError):
+        identifier, version = (int(part) for part in user_id.split(":"))
+    except (AttributeError, TypeError, ValueError):
         return None
     if not 0 < identifier <= 2147483647:
         return None
     user = db.session.get(User, identifier)
-    return user if user is not None and user.is_active else None
+    return user if user is not None and user.is_active and user.auth_version == version else None
 
 
 def roles_required(*roles):
