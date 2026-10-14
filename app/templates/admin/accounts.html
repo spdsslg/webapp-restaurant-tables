@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Accounts - {{ config.RESTAURANT_NAME }}{% endblock %}
+{% block content %}
+<section class="admin-panel" aria-labelledby="accounts-title">
+  <h1 id="accounts-title">Accounts</h1>
+  <p>Manage customer and staff access. Deactivation preserves reservation history.</p>
+  <p><a href="{{ url_for('admin.create') }}">Create account</a></p>
+  <form method="get" class="filter-form">
+    <div><label for="search">Name or email</label>
+    <input id="search" name="search" value="{{ search }}" maxlength="100"></div>
+    <div><label for="role">Role</label>
+    <select id="role" name="role"><option value="">All roles</option>
+      {% for value, label in roles %}<option value="{{ value }}" {% if role == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select></div>
+    <div><label for="state">Status</label>
+    <select id="state" name="state"><option value="">All statuses</option>
+      {% for value, label in states %}<option value="{{ value }}" {% if state == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select></div>
+    <button type="submit">Filter accounts</button>
+  </form>
+  <div class="table-scroll" role="region" aria-label="Accounts list" tabindex="0">
+    <table class="management-table">
+      <caption>Customer and staff accounts</caption>
+      <thead><tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Role</th><th scope="col">Status</th><th scope="col">Access</th></tr></thead>
+      <tbody>{% for account in accounts %}<tr>
+        <td>{{ account.name }}</td><td>{{ account.email }}</td><td>{{ account.role|capitalize }}</td>
+        <td>{{ 'Active' if account.is_active else 'Inactive' }}</td>
+        <td><a href="{{ url_for('admin.edit', identifier=account.id) }}">Manage <span class="visually-hidden">{{ account.email }}</span></a></td>
+      </tr>{% else %}<tr><td colspan="5">No accounts match these filters.</td></tr>{% endfor %}</tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

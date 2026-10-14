@@ -76,3 +76,22 @@ button:focus-visible, input:focus-visible { outline: 3px solid #7c441f; outline-
 
 .form-error { color: #9b2929; margin: .4rem 0; }
 .account-form input[type="submit"] { background: #283b32; color: white; cursor: pointer; }
+
+.admin-panel { grid-column: 1 / -1; min-width: 0; width: 100%; }
+.admin-panel h1 { font-size: 2.5rem; }
+.filter-form { display: flex; flex-wrap: wrap; align-items: end; gap: 1rem; margin: 1.5rem 0; }
+.filter-form label { display: block; margin-bottom: .4rem; }
+.filter-form input, .filter-form select, .account-form select {
+  font: inherit; padding: .7rem; border: 1px solid #788579; border-radius: .4rem; max-width: 100%;
+}
+.account-form select { width: 100%; }
+.table-scroll { overflow-x: auto; }
+.management-table { width: 100%; border-collapse: collapse; text-align: left; }
+.management-table th, .management-table td { padding: .8rem; border-bottom: 1px solid #d6d9ce; }
+.management-table caption { text-align: left; margin-bottom: .6rem; }
+select:focus-visible { outline: 3px solid #7c441f; outline-offset: 3px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 700px) {
+  .filter-form > div { width: 100%; }
+  .filter-form input, .filter-form select { width: 100%; }
+}

@@ -17,7 +17,7 @@
             <a href="{{ url_for('auth.staff') }}">Staff</a>
           {% endif %}
           {% if current_user.role == 'administrator' %}
-            <a href="{{ url_for('auth.admin') }}">Administration</a>
+            <a href="{{ url_for('admin.accounts') }}">Administration</a>
           {% endif %}
           <form method="post" action="{{ url_for('auth.logout') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

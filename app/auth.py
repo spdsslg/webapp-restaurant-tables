@@ -107,4 +107,5 @@ def staff():
 @bp.get("/admin")
 @roles_required("administrator")
 def admin():
-    return render_template("auth/account.html", title="Administrator access")
+    from .admin import accounts
+    return accounts()

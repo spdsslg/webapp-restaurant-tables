@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} - {{ config.RESTAURANT_NAME }}{% endblock %}
+{% block content %}
+<section class="account-panel" aria-labelledby="edit-title">
+  <h1 id="edit-title">{{ title }}</h1>
+  {% if account %}<p>{{ account.name }} - {{ account.email }}</p><p>Changing access signs this account out of existing sessions.</p>{% endif %}
+  {% if error %}<p role="alert" class="form-error">{{ error }}</p>{% endif %}
+  <form method="post" class="account-form">
+    {{ form.hidden_tag() }}
+    {% for field in form if field.type not in ('CSRFTokenField', 'HiddenField', 'SubmitField') %}
+      <div class="form-field">
+        {{ field.label }}{{ field(aria_describedby=field.id ~ '-errors') }}
+        <div id="{{ field.id }}-errors">{% for message in field.errors %}<p role="alert" class="form-error">{{ message }}</p>{% endfor %}</div>
+      </div>
+    {% endfor %}
+    {{ form.submit() }}
+  </form>
+  <p><a href="{{ url_for('admin.accounts') }}">Back to accounts</a></p>
+</section>
+{% endblock %}
