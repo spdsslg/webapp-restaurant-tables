@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Book a table - {{ config.RESTAURANT_NAME }}{% endblock %}
+{% block content %}
+<section class="booking-panel">
+  <p class="eyebrow">Your next visit</p>
+  <h1>Book a table</h1>
+  <p>Choose your visit, search for available tables, then select a table to reserve.</p>
+  <p>All times are shown in {{ options.timezone }}.</p>
+  {% if error %}<p class="form-error" role="alert">{{ error }}</p>{% endif %}
+  <form id="booking-form" method="post" action="{{ url_for('bookings.create') }}"
+        data-options-url="{{ url_for('bookings.options') }}"
+        data-availability-url="{{ url_for('bookings.availability') }}">
+    {{ form.hidden_tag() }}
+    <div class="filter-form">
+      <div>
+        {{ form.date.label }}
+        {{ form.date(required=true) }}
+      </div>
+      <div>
+        <label for="duration">Duration</label>
+        <select id="duration" name="duration" required>
+          {% for duration in options.durations %}
+          <option value="{{ duration }}" {% if form.duration.data == duration %}selected{% endif %}>{{ duration }} minutes</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="start">Start time</label>
+        <select id="start" name="start" required>
+          {% for start in options.starts %}
+          <option value="{{ start }}" {% if form.start.data == start %}selected{% endif %}>{{ start }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        {{ form.party_size.label }}
+        {{ form.party_size(required=true, min=1) }}
+      </div>
+      <button id="search-tables" type="button">Find a table</button>
+    </div>
+    {% for field in form %}
+      {% if field.errors %}<ul class="field-errors">
+        {% for message in field.errors %}<li>{{ field.label.text }}: {{ message }}</li>{% endfor %}
+      </ul>{% endif %}
+    {% endfor %}
+    <p id="availability-status" role="status" aria-live="polite">{% if tables is none %}Apply your filters to see available tables.{% elif not tables %}No tables are available for this visit. Try a different time or party size.{% else %}Select an available table below.{% endif %}</p>
+    <div class="table-scroll">
+      <table class="management-table">
+        <caption>Available restaurant tables</caption>
+        <thead><tr><th scope="col">Select</th><th scope="col">Table</th><th scope="col">Capacity</th></tr></thead>
+        <tbody id="available-tables">
+          {% for table in tables or [] %}
+          <tr>
+            <td><input type="radio" name="table_id" value="{{ table.id }}" aria-label="Select table {{ table.label }}"></td>
+            <td>{{ table.label }}</td><td>{{ table.capacity }} guests</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <p><button id="reserve-table" type="submit" disabled>Reserve selected table</button></p>
+    <noscript><p>Enable JavaScript to search availability and select a table.</p></noscript>
+  </form>
+</section>
+<script src="{{ url_for('static', filename='bookings.js') }}" defer></script>
+{% endblock %}

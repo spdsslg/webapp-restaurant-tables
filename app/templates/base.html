@@ -13,6 +13,7 @@
       <nav aria-label="Account navigation">
         {% if current_user.is_authenticated %}
           <a href="{{ url_for('auth.account') }}">My account</a>
+          <a href="{{ url_for('bookings.index') }}">Book a table</a>
           {% if current_user.role in ['manager', 'administrator'] %}
             <a href="{{ url_for('auth.staff') }}">Staff</a>
           {% endif %}

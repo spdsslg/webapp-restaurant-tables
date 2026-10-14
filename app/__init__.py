@@ -12,6 +12,7 @@ from .auth import bp as auth_bp
 from .accounts import register_account_commands
 from .profile import bp as profile_bp
 from .admin import bp as admin_bp
+from .bookings import bp as bookings_bp
 
 
 def create_app(test_config=None):
@@ -58,6 +59,7 @@ def create_app(test_config=None):
     app.register_blueprint(auth_bp)
     app.register_blueprint(profile_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(bookings_bp)
     register_account_commands(app)
 
     app.register_blueprint(bp)
