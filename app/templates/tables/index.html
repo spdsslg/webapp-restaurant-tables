@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Restaurant tables - {{ config.RESTAURANT_NAME }}{% endblock %}
+{% block content %}
+<section class="tables-panel" aria-labelledby="tables-title">
+  <h1 id="tables-title">Restaurant tables</h1>
+  <p>Capacity is fixed after creation. Inactive tables cannot receive new bookings; existing reservations remain unchanged.</p>
+  <p><a href="{{ url_for('tables.create') }}">Create table</a></p>
+  <div class="table-scroll" role="region" aria-label="Restaurant tables" tabindex="0">
+    <table class="management-table">
+      <caption>Active and inactive tables</caption>
+      <thead><tr><th scope="col">Label</th><th scope="col">Capacity</th><th scope="col">Status</th><th scope="col">Action</th></tr></thead>
+      <tbody>{% for table in tables %}<tr>
+        <td>{{ table.label }}</td><td>{{ table.capacity }}</td><td>{{ 'Active' if table.is_active else 'Inactive' }}</td>
+        <td><a href="{{ url_for('tables.edit', identifier=table.id) }}">Manage {{ table.label }}</a></td>
+      </tr>{% else %}<tr><td colspan="4">No tables have been created.</td></tr>{% endfor %}</tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

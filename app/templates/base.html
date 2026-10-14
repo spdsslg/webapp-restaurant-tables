@@ -9,7 +9,6 @@
   <body>
     <header class="site-header">
       <a class="brand" href="{{ url_for('main.home') }}">{{ config.RESTAURANT_NAME }}</a>
-      <span>A little time, well spent.</span>
       <nav aria-label="Account navigation">
         {% if current_user.is_authenticated %}
           <a href="{{ url_for('auth.account') }}">My account</a>
@@ -39,6 +38,5 @@
       {% endwith %}
       {% block content %}{% endblock %}
     </main>
-    <footer class="site-footer">Something here</footer>
   </body>
 </html>

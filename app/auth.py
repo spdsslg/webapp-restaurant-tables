@@ -101,7 +101,8 @@ def account():
 @bp.get("/staff")
 @roles_required("manager", "administrator")
 def staff():
-    return render_template("auth/account.html", title="Restaurant staff")
+    from .tables import index
+    return index()
 
 
 @bp.get("/admin")

@@ -14,6 +14,7 @@ from .profile import bp as profile_bp
 from .admin import bp as admin_bp
 from .bookings import bp as bookings_bp
 from .reservations import bp as reservations_bp
+from .tables import bp as tables_bp
 
 
 def create_app(test_config=None):
@@ -62,6 +63,7 @@ def create_app(test_config=None):
     app.register_blueprint(admin_bp)
     app.register_blueprint(bookings_bp)
     app.register_blueprint(reservations_bp)
+    app.register_blueprint(tables_bp)
     register_account_commands(app)
 
     app.register_blueprint(bp)

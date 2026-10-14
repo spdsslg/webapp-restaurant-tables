@@ -95,6 +95,8 @@ select:focus-visible { outline: 3px solid #7c441f; outline-offset: 3px; }
 .booking-panel h1 { font-size: 2.5rem; }
 .reservations-panel { grid-column: 1 / -1; min-width: 0; width: 100%; }
 .reservations-panel h1 { font-size: 2.5rem; }
+.tables-panel { grid-column: 1 / -1; min-width: 0; width: 100%; }
+.tables-panel h1 { font-size: 2.5rem; }
 button:disabled { opacity: .55; cursor: default; }
 .table-scroll:focus-visible { outline: 3px solid #7c441f; outline-offset: 3px; }
 @media (max-width: 700px) {
