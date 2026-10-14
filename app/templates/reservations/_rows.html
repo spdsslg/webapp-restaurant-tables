@@ -1,0 +1,14 @@
+{% for row in rows %}
+<tr>
+  <td>{{ row.table.label }}</td><td>{{ row.start_local.strftime('%Y-%m-%d') }}</td>
+  <td>{{ row.start_local.strftime('%H:%M') }}</td>
+  <td>{{ row.end_local.strftime('%H:%M') }}{% if row.end_local.date() != row.start_local.date() %} ({{ row.end_local.strftime('%Y-%m-%d') }}){% endif %}</td>
+  <td>{{ row.reservation.party_size }}</td><td>{{ row.reservation.status|capitalize }}</td>
+  <td>{% if row.reservation.status != 'canceled' %}
+    <form method="post" class="cancel-reservation" action="{{ url_for('reservations.cancel', identifier=row.reservation.id) }}">
+      {{ cancel_form.hidden_tag() }}
+      <button type="submit" aria-label="Cancel reservation for {{ row.table.label }} on {{ row.start_local.strftime('%Y-%m-%d') }} at {{ row.start_local.strftime('%H:%M') }}">Cancel reservation</button>
+    </form>
+  {% else %}Canceled{% endif %}</td>
+</tr>
+{% else %}<tr><td colspan="7">No reservations match these filters.</td></tr>{% endfor %}

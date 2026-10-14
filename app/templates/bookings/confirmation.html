@@ -1,16 +1,18 @@
 {% extends "base.html" %}
-{% block title %}Reservation confirmed - {{ config.RESTAURANT_NAME }}{% endblock %}
+{% block title %}Reservation {{ reservation.status }} - {{ config.RESTAURANT_NAME }}{% endblock %}
 {% block content %}
 <section class="account-panel">
   <p class="eyebrow">We look forward to your visit</p>
-  <h1>Reservation confirmed</h1>
+  <h1>Reservation {{ reservation.status }}</h1>
   <dl>
     <dt>Reservation number</dt><dd>{{ reservation.id }}</dd>
     <dt>Table</dt><dd>{{ table.label }}</dd>
     <dt>Date</dt><dd>{{ start_local.strftime('%d %B %Y') }}</dd>
     <dt>Time</dt><dd>{{ start_local.strftime('%H:%M') }} - {{ end_local.strftime('%H:%M') }} ({{ timezone }})</dd>
     <dt>Party size</dt><dd>{{ reservation.party_size }} guests</dd>
+    <dt>Status</dt><dd>{{ reservation.status|capitalize }}</dd>
   </dl>
   <a href="{{ url_for('bookings.index') }}">Book another visit</a>
+  <p><a href="{{ url_for('reservations.index') }}">My reservations</a></p>
 </section>
 {% endblock %}
