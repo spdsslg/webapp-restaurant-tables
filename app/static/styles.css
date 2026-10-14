@@ -60,3 +60,19 @@ h2 {
   main { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 0; }
   .note { padding: 1.5rem; }
 }
+
+nav { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; }
+nav a { color: inherit; }
+nav form { margin: 0; }
+button { font: inherit; padding: .6rem 1rem; cursor: pointer; border-radius: .4rem; border: 1px solid #283b32; background: #283b32; color: white; }
+button:focus-visible, input:focus-visible { outline: 3px solid #7c441f; outline-offset: 3px; }
+.account-panel { grid-column: 1 / -1; width: min(100%, 32rem); margin: auto; }
+.account-panel h1 { font-size: 2.5rem; }
+.account-form { display: grid; gap: 1rem; }
+.account-form label { display: block; margin-bottom: .4rem; }
+.account-form input:not([type="hidden"]) { width: 100%; padding: .7rem; font: inherit; border: 1px solid #788579; border-radius: .4rem; }
+.field-errors { margin: .4rem 0 0; padding-left: 1.2rem; color: #9b2929; }
+.messages { grid-column: 1 / -1; padding: .5rem 1rem; border: 1px solid #788579; border-radius: .4rem; }
+
+.form-error { color: #9b2929; margin: .4rem 0; }
+.account-form input[type="submit"] { background: #283b32; color: white; cursor: pointer; }

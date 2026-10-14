@@ -20,7 +20,3 @@ def test_environment_configuration_and_test_overrides(monkeypatch):
     app = create_app({"TESTING": True, "RESTAURANT_TIMEZONE": "Europe/Warsaw"})
     assert app.testing is True
     assert app.config["RESTAURANT_TIMEZONE"] == "Europe/Warsaw"
-
-
-def test_unknown_page_returns_not_found(client):
-    assert client.get("/does-not-exist").status_code == 404

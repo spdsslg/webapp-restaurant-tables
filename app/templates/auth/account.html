@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} · {{ config.RESTAURANT_NAME }}{% endblock %}
+{% block content %}
+<section class="account-panel" aria-labelledby="account-title">
+  <h1 id="account-title">{{ title }}</h1>
+  <p>Welcome, {{ current_user.name }}.</p>
+  <dl>
+    <dt>Email</dt><dd>{{ current_user.email }}</dd>
+    <dt>Role</dt><dd>{{ current_user.role|capitalize }}</dd>
+  </dl>
+</section>
+{% endblock %}

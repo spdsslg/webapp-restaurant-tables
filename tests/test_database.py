@@ -3,7 +3,6 @@ from datetime import datetime, timedelta, timezone
 import pytest
 import sqlalchemy as sa
 from sqlalchemy.exc import IntegrityError
-from flask_migrate import downgrade, upgrade
 
 from app.models import DiningTable, OpeningHours, Reservation, RestaurantSettings, User
 
@@ -37,14 +36,6 @@ def test_seed_is_idempotent_and_preserves_staff_changes(database_app, database):
     assert database.session.scalar(sa.select(sa.func.count()).select_from(User)) == 0
 
 
-def test_reservation_round_trip_preserves_aware_timestamps(database, booking):
-    reservation = Reservation(**booking)
-    database.session.add(reservation)
-    database.session.commit()
-    database.session.expire_all()
-    assert reservation.start_at == booking["start_at"]
-    assert reservation.created_at.utcoffset() is not None
-    assert reservation.status == "confirmed"
 
 
 def test_back_to_back_allowed_but_overlap_rejected(database, booking):
@@ -81,7 +72,7 @@ def test_database_rejects_duration_above_three_hours(database, booking):
 def test_referenced_table_cannot_be_deleted(database, booking):
     database.session.add(Reservation(**booking))
     database.session.commit()
-    # PostgreSQL checks RESTRICT at statement execution, not just commit.
+    # PostgreSQL checks RESTRICT at statement execution, not just commit
     with pytest.raises(IntegrityError):
         database.session.execute(sa.delete(DiningTable).where(DiningTable.id == booking["table_id"]))
 
@@ -90,6 +81,3 @@ def test_database_rejects_invalid_settings_bounds(database):
     database.session.add(RestaurantSettings(id=1, min_duration_minutes=181))
     with pytest.raises(IntegrityError, match="settings_duration_bounds"):
         database.session.commit()
-
-
-

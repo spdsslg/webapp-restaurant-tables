@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} · {{ config.RESTAURANT_NAME }}{% endblock %}
+{% block content %}
+<section class="account-panel" aria-labelledby="form-title">
+  <h1 id="form-title">{{ title }}</h1>
+  {% if error %}<p role="alert" class="form-error">{{ error }}</p>{% endif %}
+  <form method="post" class="account-form">
+    {{ form.hidden_tag() }}
+    {% for field in form if field.type not in ('CSRFTokenField', 'HiddenField', 'SubmitField') %}
+      <div class="form-field">
+        {{ field.label }}
+        {{ field(aria_describedby=field.id ~ '-errors') }}
+        <div id="{{ field.id }}-errors">
+          {% for message in field.errors %}<p class="form-error" role="alert">{{ message }}</p>{% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+    {{ form.submit() }}
+  </form>
+  {% if request.endpoint == 'auth.login' %}
+    <p>New here? <a href="{{ url_for('auth.register') }}">Create an account</a>.</p>
+  {% else %}
+    <p>Already registered? <a href="{{ url_for('auth.login') }}">Sign in</a>.</p>
+  {% endif %}
+</section>
+{% endblock %}

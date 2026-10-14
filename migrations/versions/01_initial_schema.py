@@ -11,7 +11,7 @@ depends_on = None
 
 
 def upgrade():
-    #Retain this shared extension on downgrade; other schemas may depend on it.
+    #Retain this shared extension on downgrade; other schemas may depend on it
     op.execute("CREATE EXTENSION IF NOT EXISTS btree_gist")
     op.create_table("users",
         sa.Column("id", sa.Integer(), primary_key=True),

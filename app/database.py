@@ -1,4 +1,4 @@
-"""Explicit development seed command; never creates staff credentials."""
+"""Explicit development seed command; never creates staff credentials"""
 
 from datetime import time
 

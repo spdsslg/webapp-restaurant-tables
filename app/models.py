@@ -2,10 +2,11 @@
 
 import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import ExcludeConstraint
+from flask_login import UserMixin
 
 from .extensions import db
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = "users"
     __table_args__ = (
         sa.CheckConstraint("role IN ('customer', 'manager', 'administrator')", name="user_role"),

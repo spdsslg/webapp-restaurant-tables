@@ -9,6 +9,7 @@ x-app: &app
     FLASK_DATABASE_PASSWORD: "${POSTGRES_PASSWORD:-local-development-only}"
     FLASK_MAIL_HOST: mailpit
     FLASK_MAIL_PORT: "1025"
+    FLASK_SECRET_KEY: "${FLASK_SECRET_KEY:?Set FLASK_SECRET_KEY in your local .env file}"
   volumes:
     - ./app:/app/app:ro
     - ./tests:/app/tests:ro

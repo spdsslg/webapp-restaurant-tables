@@ -1,4 +1,4 @@
-"""Integration fixtures operate only on an explicitly selected disposable database."""
+"""Integration fixtures operate only on an explicitly selected disposable database"""
 
 import os
 from pathlib import Path
