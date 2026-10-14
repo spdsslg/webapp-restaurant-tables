@@ -86,7 +86,7 @@ def test_manager_access_changes_revoke_sessions(admin_client, database_app, data
 def test_deactivation_preserves_account_and_reservation_history(admin_client, database):
     add_user(database)
     customer = add_user(database, "customer@example.com", "customer")
-    table = DiningTable(label="T1", capacity=2, x=80, y=80)
+    table = DiningTable(label="T1", capacity=2)
     database.session.add(table)
     database.session.flush()
     start = datetime(2030, 1, 7, 12, tzinfo=timezone.utc)

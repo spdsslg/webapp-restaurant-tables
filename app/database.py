@@ -27,8 +27,7 @@ def seed_demo():
         label = f"T{index + 1}"
         if db.session.scalar(db.select(DiningTable).filter_by(label=label)) is None:
             db.session.add(DiningTable(
-                label=label, capacity=capacity, x=80 + (index % 4) * 120,
-                y=80 + (index // 4) * 140,
+                label=label, capacity=capacity,
             ))
     db.session.commit()
     

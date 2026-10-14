@@ -11,7 +11,7 @@ from app.models import DiningTable, OpeningHours, Reservation, RestaurantSetting
 def booking(database):
     """Creates a customer and table, then returns a dictionary of reservation fields"""
     user = User(email="guest@example.test", password_hash="test-only-hash", name="Guest")
-    table = DiningTable(label="T1", capacity=4, x=80, y=80)
+    table = DiningTable(label="T1", capacity=4)
     database.session.add_all([user, table])
     database.session.commit()
     start = datetime(2030, 1, 7, 12, tzinfo=timezone.utc)

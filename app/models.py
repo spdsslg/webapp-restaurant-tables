@@ -60,13 +60,10 @@ class DiningTable(db.Model):
     __tablename__ = "dining_tables"
     __table_args__ = (
         sa.CheckConstraint("capacity > 0", name="table_capacity"),
-        sa.CheckConstraint("x >= 0 AND y >= 0", name="table_position"),
     )
     id = db.Column(db.Integer, primary_key=True)
     label = db.Column(db.String(30), nullable=False, unique=True)
     capacity = db.Column(db.Integer, nullable=False)
-    x = db.Column(db.Integer, nullable=False)
-    y = db.Column(db.Integer, nullable=False)
     is_active = db.Column(db.Boolean, nullable=False, server_default=sa.true())
 
 

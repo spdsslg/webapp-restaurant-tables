@@ -19,8 +19,8 @@ def history_client(database_app, database, monkeypatch):
     database.session.add_all([
         User(name="Guest", email="guest@example.com", password_hash=generate_password_hash(PASSWORD, method="scrypt")),
         User(name="Other", email="other@example.com", password_hash=generate_password_hash(PASSWORD, method="scrypt")),
-        DiningTable(label="T1", capacity=2, x=80, y=80),
-        DiningTable(label="Private table", capacity=2, x=200, y=80),
+        DiningTable(label="T1", capacity=2),
+        DiningTable(label="Private table", capacity=2),
         RestaurantSettings(id=1),
     ])
     database.session.flush()
