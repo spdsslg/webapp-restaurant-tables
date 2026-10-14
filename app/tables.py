@@ -20,7 +20,7 @@ def require_configuration():
 
 
 def lock_staff_actor():
-    """Recheck staff access under a shared lock before changing a physical table"""
+    """Recheck staff access under a shared account lock before staff changes"""
     actor_id, session_id = current_user.id, session.get("_user_id")
     actor = db.session.scalar(db.select(User).where(User.id == actor_id).with_for_update(read=True)
                               .execution_options(populate_existing=True))

@@ -15,7 +15,8 @@
           <a href="{{ url_for('bookings.index') }}">Book a table</a>
           <a href="{{ url_for('reservations.index') }}">My reservations</a>
           {% if current_user.role in ['manager', 'administrator'] %}
-            <a href="{{ url_for('auth.staff') }}">Staff</a>
+            <a href="{{ url_for('tables.index') }}">Tables</a>
+            <a href="{{ url_for('staff_reservations.index') }}">Restaurant bookings</a>
           {% endif %}
           {% if current_user.role == 'administrator' %}
             <a href="{{ url_for('admin.accounts') }}">Administration</a>

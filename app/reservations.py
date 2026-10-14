@@ -8,7 +8,7 @@ from flask_login import current_user
 
 from .booking_rules import BookingError, parse_day
 from .extensions import db, login_manager
-from .models import DiningTable, Reservation, RestaurantSettings
+from .models import DiningTable, Reservation, RestaurantSettings, User
 from .reservation_forms import CancelForm
 
 bp = Blueprint("reservations", __name__, url_prefix="/reservations")
@@ -30,8 +30,8 @@ def require_customer():
         return login_manager.unauthorized()
 
 
-def history_rows():
-    """Filter only the signed-in customer's bookings by their local start date"""
+def history_rows(*, all_customers=False):
+    """Filter local-date history; only protected staff routes request all customers"""
     settings = db.session.get(RestaurantSettings, 1)
     try:
         if settings is None:
@@ -47,7 +47,11 @@ def history_rows():
     end_day = parse_day(end_text) if end_text else None
     if start_day and end_day and start_day > end_day:
         raise BookingError("The start date must not be after the end date.")
-    query = db.select(Reservation, DiningTable).join(DiningTable, Reservation.table_id == DiningTable.id).where(Reservation.user_id == current_user.id)
+    query = db.select(Reservation, DiningTable, User.name, User.email).join(
+        DiningTable, Reservation.table_id == DiningTable.id,
+    ).join(User, Reservation.user_id == User.id)
+    if not all_customers:
+        query = query.where(Reservation.user_id == current_user.id)
     try:
         if start_day:
             lower = datetime.combine(start_day, time(), zone).astimezone(timezone.utc)
@@ -61,7 +65,8 @@ def history_rows():
         query = query.where(Reservation.status == status)
     records = db.session.execute(query.order_by(Reservation.start_at.desc(), Reservation.id.desc())).all()
     rows = [{"reservation": reservation, "table": table, "start_local": reservation.start_at.astimezone(zone),
-             "end_local": reservation.end_at.astimezone(zone)} for reservation, table in records]
+             "end_local": reservation.end_at.astimezone(zone), "customer": {"name": name, "email": email}}
+            for reservation, table, name, email in records]
     return rows, zone.key
 
 

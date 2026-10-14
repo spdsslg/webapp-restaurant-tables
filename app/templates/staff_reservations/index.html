@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Restaurant reservations - {{ config.RESTAURANT_NAME }}{% endblock %}
+{% block content %}
+<section class="reservations-panel" aria-labelledby="staff-history-title">
+  <h1 id="staff-history-title">Restaurant reservations</h1>
+  {% if timezone %}<p>Times shown in {{ timezone }}. Cancellation preserves reservation history.</p>{% endif %}
+  <form id="reservation-filters" method="get" class="filter-form" data-filter-url="{{ url_for('staff_reservations.filter_history') }}">
+    <div><label for="date-from">From date</label><input id="date-from" type="date" name="date_from" value="{{ request.args.get('date_from', '') }}"></div>
+    <div><label for="date-to">To date</label><input id="date-to" type="date" name="date_to" value="{{ request.args.get('date_to', '') }}"></div>
+    <div><label for="reservation-status">Status</label><select id="reservation-status" name="status">
+      <option value="">All statuses</option>
+      {% for status in statuses %}<option value="{{ status }}" {% if request.args.get('status') == status %}selected{% endif %}>{{ status|capitalize }}</option>{% endfor %}
+    </select></div>
+    <button type="submit">Filter reservations</button>
+  </form>
+  <p id="history-feedback" role="status" aria-live="polite">{{ error or '' }}</p>
+  <div class="table-scroll" role="region" aria-label="Restaurant reservation history" tabindex="0">
+    <table class="management-table"><caption>Customer reservations</caption>
+      <thead><tr><th scope="col">Customer</th><th scope="col">Email</th><th scope="col">Table</th><th scope="col">Date</th><th scope="col">Start</th><th scope="col">End</th><th scope="col">Party size</th><th scope="col">Status</th><th scope="col">Action</th></tr></thead>
+      <tbody id="reservation-rows">{% include "staff_reservations/_rows.html" %}</tbody>
+    </table>
+  </div>
+</section>
+<script type="module" src="{{ url_for('static', filename='reservations.js') }}"></script>
+{% endblock %}
